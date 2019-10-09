@@ -1,6 +1,7 @@
 import React from 'react';
 import {withFormik, Form, Field} from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 function MyForm({values, errors, touched}) {
   return (
@@ -18,10 +19,11 @@ function MyForm({values, errors, touched}) {
         <Field type="password" name="password" placeholder="Password" />
       </div>
       <label>
+        {touched.tos && errors.tos && <p>{errors.tos}</p>}
         <Field type="checkbox" name="tos" checked={values.tos} />
         Accept Terms of Service
       </label>
-      <button>Submit</button> 
+      <button type="submit">Submit</button> 
     </Form>
   );
 }
@@ -49,12 +51,36 @@ const LoginForm = withFormik({
     password: Yup.string()
     // Create custom error codes
       .min(6, "Password must be 6 characters or longer")
-      .required("Password is required")
+      .required("Password is required"),
+    tos: Yup.bool()
+      .test(
+        'tos',
+        'Must accept the Terms and Conditions!',
+        value => value === true
+      )
+      .required(
+        'Must accept the Terms and Conditions!'
+      ),
   }),
   // End Validation Schema
 
-  handleSubmit(values) {
-    console.log(values);
+  handleSubmit(values, {resetForm, setErrors, setSubmitting}) {
+    if (values.email === "alreadytaken@gmail.com") {
+      setErrors({email: "That email is already taken"});
+    } else {
+      axios
+        .post("https://reqres.in/api/users", values)
+        .then(res => {
+          console.log(res);
+          resetForm();
+          // originally set to false
+          setSubmitting(true);
+        })
+        .catch(err => {
+          console.log(err);
+          setSubmitting(false);
+        })
+    }
   }
 })(MyForm);
 
