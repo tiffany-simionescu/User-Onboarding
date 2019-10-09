@@ -68,7 +68,9 @@ const LoginForm = withFormik({
   // End Validation Schema
 
   handleSubmit(values, {resetForm, setErrors, setSubmitting}) {
-    if (values.email === "alreadytaken@gmail.com") {
+    
+    // STRETCH - waffle@syrup.com
+    if (values.email === "waffle@syrup.com") {
       setErrors({email: "That email is already taken"});
     } else {
       axios
