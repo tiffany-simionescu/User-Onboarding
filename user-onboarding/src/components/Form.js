@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {withFormik, Form, Field} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import UserInfo from './UserInfo.js';
 
 function MyForm({values, errors, touched}) {
+  const [users, setUsers] = useState([]);
+
   return (
     <Form>
       <div>
@@ -73,7 +76,6 @@ const LoginForm = withFormik({
         .then(res => {
           console.log(res);
           resetForm();
-          // originally set to false
           setSubmitting(true);
         })
         .catch(err => {
@@ -85,3 +87,5 @@ const LoginForm = withFormik({
 })(MyForm);
 
 export default LoginForm;
+
+// Step 4
