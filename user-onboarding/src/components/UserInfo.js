@@ -3,10 +3,14 @@ import React from 'react';
 export default function UserInfo(props) {
   return (
     <div>
-      <p>Name: {props.name}</p>
-      <p>Email: {props.email}</p>
-      <p>Terms of Service Accepted: {props.tos}</p>
-      <p>Password: {props.password}</p>
+      {props.users.map(user => (
+        <ul key={user.id}>
+          <li>Name: {user.name}</li>
+          <li>Email: {user.email}</li>
+          <li>Password: {user.password}</li>
+          <li>Terms of Service Accepted: Yes</li>
+        </ul>
+      ))}
     </div>
   );
 }

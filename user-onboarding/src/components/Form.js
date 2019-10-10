@@ -1,33 +1,43 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {withFormik, Form, Field} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import UserInfo from './UserInfo.js';
 
-function MyForm({values, errors, touched}) {
+function MyForm(props, {values, errors, touched}) {
   const [users, setUsers] = useState([]);
 
+  useEffect(() => {
+    if(props.status) {
+      setUsers([...users, props.status])
+    }
+  }, [props.status]);
+
   return (
-    <Form>
-      <div>
-        {touched.name && errors.name && <p>{errors.name}</p>}
-        <Field type="text" name="name" placeholder="Name" />
-      </div>
-      <div>
-        {touched.email && errors.email && <p>{errors.email}</p>}
-        <Field type="email" name="email" placeholder="Email" />
-      </div>
-      <div>
-        {touched.password && errors.password && <p>{errors.password}</p>}
-        <Field type="password" name="password" placeholder="Password" />
-      </div>
-      <label>
-        {touched.tos && errors.tos && <p>{errors.tos}</p>}
-        <Field type="checkbox" name="tos" checked={values.tos} />
-        Accept Terms of Service
-      </label>
-      <button type="submit">Submit</button> 
-    </Form>
+    <div>
+      <Form>
+        <div>
+          {props.touched.name && props.errors.name && <p>{props.errors.name}</p>}
+          <Field type="text" name="name" placeholder="Name" />
+        </div>
+        <div>
+          {props.touched.email && props.errors.email && <p>{props.errors.email}</p>}
+          <Field type="email" name="email" placeholder="Email" />
+        </div>
+        <div>
+          {props.touched.password && props.errors.password && <p>{props.errors.password}</p>}
+          <Field type="password" name="password" placeholder="Password" />
+        </div>
+        <label>
+          {props.touched.tos && props.errors.tos && <p>{props.errors.tos}</p>}
+          <Field type="checkbox" name="tos" checked={props.values.tos} />
+          Accept Terms of Service
+        </label>
+        <button type="submit">Submit</button> 
+      </Form>
+
+      <UserInfo users={users} />
+    </div>
   );
 }
 
@@ -67,8 +77,8 @@ const LoginForm = withFormik({
   }),
   // End Validation Schema
 
-  handleSubmit(values, {resetForm, setErrors, setSubmitting}) {
-    
+  handleSubmit(values, {resetForm, setErrors, setSubmitting, setStatus}) {
+
     // STRETCH - waffle@syrup.com
     if (values.email === "waffle@syrup.com") {
       setErrors({email: "That email is already taken"});
@@ -79,6 +89,7 @@ const LoginForm = withFormik({
           console.log(res);
           resetForm();
           setSubmitting(true);
+          setStatus(res.data);
         })
         .catch(err => {
           console.log(err);
@@ -86,6 +97,7 @@ const LoginForm = withFormik({
         })
     }
   }
+
 })(MyForm);
 
 export default LoginForm;
