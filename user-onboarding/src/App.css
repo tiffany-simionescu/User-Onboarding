@@ -62,3 +62,7 @@ button:active {
 button:focus {
   outline:0;
 }
+
+li {
+  list-style-type: none;
+}

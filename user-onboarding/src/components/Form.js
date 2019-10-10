@@ -4,32 +4,32 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import UserInfo from './UserInfo.js';
 
-function MyForm(props, {values, errors, touched}) {
+function MyForm({values, status, errors, touched}) {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    if(props.status) {
-      setUsers([...users, props.status])
+    if(status) {
+      setUsers([...users, status])
     }
-  }, [props.status]);
+  }, [status]);
 
   return (
     <div>
       <h1>User Onboarding</h1>
       <Form>
       
-          {props.touched.name && props.errors.name && <p>{props.errors.name}</p>}
+          {touched.name && errors.name && <p>{errors.name}</p>}
           <Field className="field" type="text" name="name" placeholder="Name" />
 
-          {props.touched.email && props.errors.email && <p>{props.errors.email}</p>}
+          {touched.email && errors.email && <p>{errors.email}</p>}
           <Field className="field" type="email" name="email" placeholder="Email" />
 
-          {props.touched.password && props.errors.password && <p>{props.errors.password}</p>}
+          {touched.password && errors.password && <p>{errors.password}</p>}
           <Field className="field" type="password" name="password" placeholder="Password" />
         
         <label>
-          {props.touched.tos && props.errors.tos && <p>{props.errors.tos}</p>}
-          <Field type="checkbox" name="tos" checked={props.values.tos} />
+          {touched.tos && errors.tos && <p>{errors.tos}</p>}
+          <Field type="checkbox" name="tos" checked={values.tos} />
           Accept Terms of Service
         </label>
         <button type="submit">Submit</button> 
