@@ -15,19 +15,18 @@ function MyForm(props, {values, errors, touched}) {
 
   return (
     <div>
+      <h1>User Onboarding</h1>
       <Form>
-        <div>
+      
           {props.touched.name && props.errors.name && <p>{props.errors.name}</p>}
-          <Field type="text" name="name" placeholder="Name" />
-        </div>
-        <div>
+          <Field className="field" type="text" name="name" placeholder="Name" />
+
           {props.touched.email && props.errors.email && <p>{props.errors.email}</p>}
-          <Field type="email" name="email" placeholder="Email" />
-        </div>
-        <div>
+          <Field className="field" type="email" name="email" placeholder="Email" />
+
           {props.touched.password && props.errors.password && <p>{props.errors.password}</p>}
-          <Field type="password" name="password" placeholder="Password" />
-        </div>
+          <Field className="field" type="password" name="password" placeholder="Password" />
+        
         <label>
           {props.touched.tos && props.errors.tos && <p>{props.errors.tos}</p>}
           <Field type="checkbox" name="tos" checked={props.values.tos} />
